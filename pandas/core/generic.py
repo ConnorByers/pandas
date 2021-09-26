@@ -4590,10 +4590,18 @@ class NDFrame(PandasObject, indexing.IndexingMixin):
         )
 
         if indexer is None:
+            if ignore_index:
+                axis = 1 if isinstance(self, ABCDataFrame) else 0
+
             if inplace:
+                if ignore_index:
+                    self.set_axis(axis, default_index(len(indexer)))
                 return
             else:
-                return self.copy()
+                result = self.copy()
+                if ignore_index:
+                    result.set_axis(axis, default_index(len(indexer)))
+                return result
 
         baxis = self._get_block_manager_axis(axis)
         new_data = self._mgr.take(indexer, axis=baxis, verify=False)
