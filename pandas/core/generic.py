@@ -4580,7 +4580,7 @@ class NDFrame(PandasObject, indexing.IndexingMixin):
     ):
 
         inplace = validate_bool_kwarg(inplace, "inplace")
-        axis = self._get_axis_number(axis)
+        axis_number = self._get_axis_number(axis)
         ascending = validate_ascending(ascending)
 
         target = self._get_axis(axis)
@@ -4591,27 +4591,27 @@ class NDFrame(PandasObject, indexing.IndexingMixin):
 
         if indexer is None:
             if ignore_index:
-                axis = 1 if isinstance(self, ABCDataFrame) else 0
+                axis_number = 1 if isinstance(self, ABCDataFrame) else 0
 
             if inplace:
                 if ignore_index:
-                    self.set_axis(axis, default_index(len(target)))
+                    self.set_axis(axis_number, default_index(len(target)))
                 return
             else:
                 result = self.copy()
                 if ignore_index:
-                    result.set_axis(axis, default_index(len(target)))
+                    result.set_axis(axis_number, default_index(len(target)))
                 return result
 
-        baxis = self._get_block_manager_axis(axis)
+        baxis = self._get_block_manager_axis(axis_number)
         new_data = self._mgr.take(indexer, axis=baxis, verify=False)
 
         # reconstruct axis if needed
         new_data.set_axis(baxis, new_data.axes[baxis]._sort_levels_monotonic())
 
         if ignore_index:
-            axis = 1 if isinstance(self, ABCDataFrame) else 0
-            new_data.set_axis(axis, default_index(len(indexer)))
+            axis_number = 1 if isinstance(self, ABCDataFrame) else 0
+            new_data.set_axis(axis_number, default_index(len(indexer)))
 
         result = self._constructor(new_data)
 
