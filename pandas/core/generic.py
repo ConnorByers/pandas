@@ -757,6 +757,10 @@ class NDFrame(PandasObject, indexing.IndexingMixin):
     @final
     def _set_axis_nocheck(self, labels, axis: Axis, inplace: bool_t):
         # NDFrame.rename with inplace=False calls set_axis(inplace=True) on a copy.
+        print('LABEL:')
+        print(labels)
+        print('axis: ')
+        print(axis)
         if inplace:
             setattr(self, self._get_axis_name(axis), labels)
         else:
