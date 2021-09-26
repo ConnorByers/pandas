@@ -4599,7 +4599,7 @@ class NDFrame(PandasObject, indexing.IndexingMixin):
 
             if inplace:
                 if ignore_index:
-                    self.set_axis(axis, default_index(len(target)))
+                    self.set_axis(axis=axis, labels=default_index(len(target)))
                 return
             else:
                 if ignore_index:
