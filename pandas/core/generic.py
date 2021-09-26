@@ -4595,12 +4595,12 @@ class NDFrame(PandasObject, indexing.IndexingMixin):
 
             if inplace:
                 if ignore_index:
-                    self.set_axis(axis, default_index(len(indexer)))
+                    self.set_axis(axis, default_index(len(target)))
                 return
             else:
                 result = self.copy()
                 if ignore_index:
-                    result.set_axis(axis, default_index(len(indexer)))
+                    result.set_axis(axis, default_index(len(target)))
                 return result
 
         baxis = self._get_block_manager_axis(axis)
